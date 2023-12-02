@@ -1,44 +1,27 @@
-// const socketIo = require('socket.io')
-// const express = require('express')
-// const http = require('http')
-
-// const app = express()
-// const server = http.createServer(app)
-// const io = socketIo(server)
-
-// let players = []
-// let currentPlayer = 0
-
-// io.on('connection', (socket) => {
-//     console.log("User connected")
-//     players.push(socket)
-
-//     if (players.length % 2 == 0)
-//         io.emit('gameStart', currentPlayer)
-
-//     socket.on('makeMove')
-// })
-
-const express = require('express');
- const { createServer } = require('http');
-const { Server: socketIo } = require('socket.io');
-
+const express = require("express")
+const debug= require("debug")("http")
+const http = require('http')
 const app = express();
-const server = createServer(app);
-const io = new socketIo(server);
+
+const server = require('http').createServer()
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
 
 let players = [];
 let currentPlayer = 0;
 let gameBoard = Array(9).fill('');
-
 io.on('connection', (socket) => {
   console.log('A user connected');
-
   players.push(socket);
 
   if (players.length === 2) {
     // Start the game when two players are connected
     io.emit('gameStart', currentPlayer);
+    currentPlayer = 'X'
   }
 
   socket.on('makeMove', (index) => {
@@ -48,6 +31,12 @@ io.on('connection', (socket) => {
       checkWinner();
       currentPlayer = 1 - currentPlayer; // Switch players
     }
+    console.log(`Player ${currentPlayer}`)
+  });
+
+  socket.on('resetGame', () => {
+    gameBoard = Array(9).fill('');
+    io.emit('updateBoard', { gameBoard, currentPlayer: 0 });
   });
 
   socket.on('disconnect', () => {
