@@ -8,9 +8,35 @@ COSC 439 Final Project where sockets have to be implemented to enable communicat
 
 Enable multiple players from different computers to take turns to play Tic Tac Toe
 
-### Why is it named Tac Tac Taco?
+## Running the code
 
-You win a virtual Taco whenever you win.
+### Dependencies
+
+You will need to have [node](https://nodejs.org/en) installed on your computer
+
+### Running
+
+1. `git clone https://github.com/curlyLasagna/Tac-Tac-Toe.git`
+2. `cd Tac-Tac-Toe`
+
+#### Installing dependencies for client
+
+> Relative to root
+1. `cd client`
+2. `npm i`
+
+#### Installing depencies for server
+
+> Relative to root
+1. `cd server`
+2. `npm i`
+
+### Running order
+
+Run the server by going to the server directory and executing `npm run dev`
+
+Run the client by going to the client directory and executing
+`npm run start`
 
 ## Built with the following
 
